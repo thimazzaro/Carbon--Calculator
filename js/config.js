@@ -7,6 +7,12 @@
 const CONFIG = {
   roadFactor: 1.35, // applied to straight-line distance to estimate road km
 
+  credits: {
+    pricePerTonneMin: 30,
+    pricePerTonneMax: 100,
+    explanation: "Um crédito de carbono representa a redução ou remoção de uma tonelada de CO₂ equivalente da atmosfera. Ao comprar créditos você financia projetos de reflorestamento, energia renovável ou conservação florestal que compensam as emissões que não é possível evitar. No Brasil, o mercado voluntário de carbono está em expansão e os valores variam conforme o tipo e a qualidade do projeto certificado."
+  },
+
   transports: [
     {
       key: "bicicleta",

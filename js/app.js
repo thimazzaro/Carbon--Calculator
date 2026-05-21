@@ -24,6 +24,8 @@
   const calcBtn          = document.getElementById("calc-btn");
   const resultsSection   = document.getElementById("results-section");
   const resultsContent   = document.getElementById("results-content");
+  const creditsSection   = document.getElementById("credits-section");
+  const creditsContent   = document.getElementById("credits-content");
 
   /* ── Autocomplete ── */
   const originAC = UI.makeAutocomplete(
@@ -72,6 +74,7 @@
     panelCities.hidden = mode !== "cities";
     panelManual.hidden = mode !== "manual";
     resultsSection.hidden = true;
+    creditsSection.hidden = true;
     updateCalcBtn();
   }
 
@@ -122,6 +125,16 @@
 
     UI.renderResults(resultsContent, km, originLabel, destLabel, state.transport);
     resultsSection.hidden = false;
+
+    const refKey     = state.transport === "all" ? "carro" : state.transport;
+    const refTransport = CONFIG.transports.find(t => t.key === refKey);
+    const co2kg      = Calculator.computeEmission(refKey, km);
+    const label      = state.transport === "all"
+      ? `${refTransport.icon} ${refTransport.label} (referência)`
+      : `${refTransport.icon} ${refTransport.label}`;
+    UI.renderCredits(creditsContent, co2kg, label);
+    creditsSection.hidden = false;
+
     setTimeout(() => resultsSection.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   }
 

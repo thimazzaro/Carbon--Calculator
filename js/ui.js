@@ -167,6 +167,63 @@ const UI = (() => {
     container.innerHTML = html;
   }
 
+  /* ── Carbon credits rendering ── */
+  function renderCredits(container, co2kg, transportLabel) {
+    if (co2kg === 0) {
+      container.innerHTML = `
+        <div class="credits-zero">
+          <div class="credits-zero-icon">🎉</div>
+          <div class="credits-zero-title">Emissão zero!</div>
+          <p class="credits-zero-text">
+            Sua viagem de <strong>${escapeHtml(transportLabel)}</strong> não gerou emissões de carbono.
+            Nenhuma compensação necessária.
+          </p>
+        </div>
+        <div class="credits-explanation">
+          <h3>O que são créditos de carbono?</h3>
+          <p>${escapeHtml(CONFIG.credits.explanation)}</p>
+        </div>`;
+      return;
+    }
+
+    const { tonnes, costMin, costMax } = Calculator.computeCredits(co2kg);
+    const fmtCredits = tonnes < 0.001
+      ? "< 0,001"
+      : tonnes.toLocaleString("pt-BR", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+    const fmtBRL = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+    container.innerHTML = `
+      <p class="credits-subtitle">
+        Para compensar a emissão de <strong>${Calculator.formatCO2(co2kg)}</strong>
+        ${transportLabel ? `com <strong>${escapeHtml(transportLabel)}</strong>` : ""}:
+      </p>
+
+      <div class="credits-metrics">
+        <div class="credits-metric credits-metric-primary">
+          <span class="cm-value">${fmtCredits}</span>
+          <span class="cm-label">crédito${tonnes !== 1 ? "s" : ""} de carbono</span>
+          <span class="cm-sub">${tonnes.toLocaleString("pt-BR", { minimumFractionDigits: 4, maximumFractionDigits: 4 })} tCO₂e</span>
+        </div>
+        <div class="credits-metric credits-metric-cost">
+          <span class="cm-value">${fmtBRL(costMin)} – ${fmtBRL(costMax)}</span>
+          <span class="cm-label">custo estimado</span>
+          <span class="cm-sub">mercado voluntário brasileiro</span>
+        </div>
+      </div>
+
+      <div class="credits-explanation">
+        <h3>O que são créditos de carbono?</h3>
+        <p>${escapeHtml(CONFIG.credits.explanation)}</p>
+      </div>
+
+      <div class="credits-action">
+        <button class="btn btn-buy-credits" disabled>
+          🌿 Comprar Créditos de Carbono
+        </button>
+        <p class="credits-action-note">Em breve: acesso direto a projetos certificados no Brasil</p>
+      </div>`;
+  }
+
   /* ── Helpers ── */
   function escapeHtml(str) {
     return String(str)
@@ -174,5 +231,5 @@ const UI = (() => {
       .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  return { makeAutocomplete, renderTransportCards, renderResults };
+  return { makeAutocomplete, renderTransportCards, renderResults, renderCredits };
 })();

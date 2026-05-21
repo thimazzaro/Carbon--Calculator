@@ -23,10 +23,21 @@ const Calculator = (() => {
     return kg.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + " kg CO₂e";
   }
 
+  function computeCredits(co2kg) {
+    const tonnes = co2kg / 1000;
+    const { pricePerTonneMin, pricePerTonneMax } = CONFIG.credits;
+    return {
+      tonnes,
+      credits: tonnes,
+      costMin: tonnes * pricePerTonneMin,
+      costMax: tonnes * pricePerTonneMax,
+    };
+  }
+
   function roadDistance(origin, destination) {
     const straight = haversineKm(origin.lat, origin.lng, destination.lat, destination.lng);
     return Math.round(straight * CONFIG.roadFactor);
   }
 
-  return { computeEmission, compareAll, formatCO2, roadDistance };
+  return { computeEmission, compareAll, formatCO2, roadDistance, computeCredits };
 })();
