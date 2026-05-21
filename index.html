@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Emissão de CO₂</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <h1>🌱 Calculadora de CO₂</h1>
+      <p>Compare as emissões de carbono entre diferentes meios de transporte</p>
+    </header>
+
+    <main class="app-main">
+
+      <!-- Step 1: Route -->
+      <section class="card" id="route-section">
+        <div class="section-title">
+          <span class="step-number">1</span>
+          <h2>Rota</h2>
+        </div>
+
+        <div class="tab-bar">
+          <button class="tab-btn active" id="tab-cities">📍 Buscar cidades</button>
+          <button class="tab-btn" id="tab-manual">✏️ Distância manual</button>
+        </div>
+
+        <!-- Cities panel -->
+        <div id="panel-cities">
+          <div class="route-row">
+            <div class="form-group autocomplete-wrap">
+              <label for="origin-input">Origem</label>
+              <input type="text" id="origin-input" placeholder="Ex: São Paulo, SP" autocomplete="off" />
+              <ul class="ac-dropdown" id="origin-dropdown"></ul>
+            </div>
+            <div class="route-arrow">→</div>
+            <div class="form-group autocomplete-wrap">
+              <label for="dest-input">Destino</label>
+              <input type="text" id="dest-input" placeholder="Ex: Rio de Janeiro, RJ" autocomplete="off" />
+              <ul class="ac-dropdown" id="dest-dropdown"></ul>
+            </div>
+          </div>
+          <div id="city-distance-badge" class="distance-badge" hidden></div>
+          <p id="city-error" class="field-error" hidden></p>
+        </div>
+
+        <!-- Manual panel -->
+        <div id="panel-manual" hidden>
+          <div class="form-group">
+            <label for="manual-km">Distância</label>
+            <div class="input-unit-row">
+              <input type="number" id="manual-km" min="1" step="1" placeholder="Ex: 430" />
+              <span class="unit-chip">km</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2: Transport -->
+      <section class="card" id="transport-section">
+        <div class="section-title">
+          <span class="step-number">2</span>
+          <h2>Meio de transporte</h2>
+        </div>
+        <div class="transport-grid" id="transport-grid"></div>
+      </section>
+
+      <!-- Calculate button -->
+      <button class="btn btn-primary btn-calc" id="calc-btn" disabled>
+        Calcular emissões →
+      </button>
+
+      <!-- Results -->
+      <section class="card" id="results-section" hidden>
+        <h2>Resultado</h2>
+        <div id="results-content"></div>
+      </section>
+
+      <!-- Carbon Credits -->
+      <section class="card card-credits" id="credits-section" hidden>
+        <h2>🌳 Créditos de Carbono</h2>
+        <div id="credits-content"></div>
+      </section>
+
+    </main>
+
+    <footer class="app-footer">
+      <p>Fatores baseados em IPCC AR6, EPA e DEFRA. Valores aproximados para fins educativos.</p>
+      <p class="footer-credit">Desenvolvido por Thiago Mazzaro e Claude</p>
+    </footer>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/routes-data.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
